@@ -7,6 +7,7 @@ import app.keyboards as kb
 from app.keyboards import formats
 from PIL import Image
 from aiogram.types import FSInputFile
+import database.requests as rq
 
 
 router = Router()
@@ -15,6 +16,7 @@ user_format_choice = {}
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
+    await rq.set_user(message.from_user.id, message.from_user.first_name)
     await message.answer(f"Привіт, вибери формат для конвертації!: ", reply_markup=kb.format_kb)
 
 

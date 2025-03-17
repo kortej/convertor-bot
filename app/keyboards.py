@@ -1,8 +1,9 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Конвертація')]
-])
+start_keyb = ReplyKeyboardMarkup(keyboard=
+    [[KeyboardButton(text='Profile'), KeyboardButton(text='Convert')]],
+    resize_keyboard=True
+)
 
 
 formats = ["PNG", "JPG", "WEBP"]

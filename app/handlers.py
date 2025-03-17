@@ -17,9 +17,17 @@ user_format_choice = {}
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await rq.set_user(message.from_user.id)
-    await message.answer(f"Привіт, вибери формат для конвертації!: ",
-                        reply_markup=kb.format_kb)
+    await rq.set_user(message.from_user.id, message.from_user.first_name)
+    await message.answer(f"Hello, select an action from the keyboard: ",
+                        reply_markup=kb.start_keyb)
+
+
+@router.message(F.text == 'Profile')
+async def cmd_profile(message: Message):
+    user_data = await rq.get_user(message.from_user.id)
+
+    if isinstance(user_data, dict):
+        await message.answer(f"Your name is: {user_data['name']}")
 
 
 @router.message(F.text.in_(formats))

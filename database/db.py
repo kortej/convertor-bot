@@ -1,8 +1,9 @@
-from sqlalchemy import String, Column, Integer, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import String, Column, BigInteger, ForeignKey
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 
-engine = create_async_engine(url='sqlite+aiosqlite:///format_bot.sqlite3')
+
+engine = create_async_engine(url='sqlite+aiosqlite:///database/format_bot.sqlite3')
 
 async_session = async_sessionmaker(engine)
 
@@ -11,23 +12,11 @@ class Base(AsyncAttrs, DeclarativeBase):
     pass
 
 
-# Модель користувача
 class User(Base):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    tg_id = Column(Integer, primary_key=True)
-    user_name = Column(String)
-    conversions = relationship("Conversion", back_populates="user")
 
-
-# Модель для лічильника конвертацій
-class Conversion(Base):
-    __tablename__ = 'conversions'
-    id = Column(Integer, primary_key=True)
-    tg_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    count = Column(Integer, default=0)
-    user = relationship("User", back_populates="conversions")
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tg_id: Mapped[int] = mapped_column(BigInteger)
 
 
 # create data table 

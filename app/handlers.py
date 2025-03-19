@@ -78,6 +78,8 @@ async def handle_photo(message: Message):
     converted_photo = FSInputFile(output_path)
     await message.answer_document(converted_photo)
 
+    await rq.counter(tg_id=user_id)
+
     # Очищення файлів
     os.remove(input_path)
     os.remove(output_path)

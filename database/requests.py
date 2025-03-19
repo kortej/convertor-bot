@@ -14,3 +14,15 @@ async def set_user(tg_id: int, username: str):
             session.add(user)
         
         await session.commit()
+
+
+async def counter(tg_id: int):
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.tg_id == tg_id))
+
+        if user:
+            user.count_converts += 1
+        
+            await session.commit()
+
+        

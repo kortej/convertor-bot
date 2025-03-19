@@ -17,6 +17,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     tg_id: Mapped[int] = mapped_column(BigInteger)
+    username: Mapped[str]
 
 
 # create data table 

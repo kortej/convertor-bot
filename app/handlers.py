@@ -17,9 +17,22 @@ user_format_choice = {}
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await rq.set_user(message.from_user.id)
-    await message.answer(f"Привіт, вибери формат для конвертації!: ",
-                        reply_markup=kb.format_kb)
+    await message.answer(f"Привіт, виберіть дію: ",
+                        reply_markup=kb.main)
+
+
+@router.message(Command('register'))
+async def cmd_registration(message: Message):
+    if await rq.is_user_in_db(message.from_user.id) is False:
+        await rq.set_user(message.from_user.id, message.from_user.first_name)
+        await message.reply(text=f'Дякуємо за регістрацію!')
+    else:
+        await message.answer('Ви вже зареєстровані)')
+
+
+@router.message(Command('convert'))
+async def cmd_convertion(message: Message):
+    await message.answer(text='Виберіть формат: ', reply_markup=kb.format_kb)
 
 
 @router.message(F.text.in_(formats))
@@ -64,6 +77,8 @@ async def handle_photo(message: Message):
     # Відправка назад
     converted_photo = FSInputFile(output_path)
     await message.answer_document(converted_photo)
+
+    await rq.counter(tg_id=user_id)
 
     # Очищення файлів
     os.remove(input_path)

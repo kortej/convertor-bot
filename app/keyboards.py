@@ -1,8 +1,8 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Конвертація')]
-])
+    [KeyboardButton(text='/register'), KeyboardButton(text='/convert')]],
+    resize_keyboard=True)
 
 
 formats = ["PNG", "JPG", "WEBP"]

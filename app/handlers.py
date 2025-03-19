@@ -23,11 +23,11 @@ async def cmd_start(message: Message):
 
 @router.message(Command('register'))
 async def cmd_registration(message: Message):
-    await rq.set_user(message.from_user.id,
-                    message.from_user.first_name)
-    await message.reply(
-        text=f'Дякуємо за регістрацію!'
-        )
+    if await rq.is_user_in_db(message.from_user.id) is False:
+        await rq.set_user(message.from_user.id, message.from_user.first_name)
+        await message.reply(text=f'Дякуємо за регістрацію!')
+    else:
+        await message.answer('Ви вже зареєстровані)')
 
 
 @router.message(Command('convert'))

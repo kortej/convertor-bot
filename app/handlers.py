@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 import app.keyboards as kb
-from app.keyboards import formats
+from app.keyboards import formats, formats_2
 from PIL import Image
 from aiogram.types import FSInputFile
 import database.requests as rq
@@ -53,7 +53,7 @@ async def send_user_data(message: Message):
     await message.answer(response, parse_mode="Markdown")
 
 
-@router.message(F.text.in_(formats))
+@router.message(F.text.in_(formats) | F.text.in_(formats_2))
 async def choose_format(message: Message):
     user_format_choice[message.from_user.id] = message.text.lower()
     await message.answer(f"✅ Формат {hbold(message.text)} вибрано. Тепер надішли фото!",

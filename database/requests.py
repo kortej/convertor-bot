@@ -16,6 +16,12 @@ async def set_user(tg_id: int, username: str):
         await session.commit()
 
 
+async def get_user(tg_id: int):
+    async with async_session() as session:
+        result = await session.execute(select(User).where(User.tg_id == tg_id))
+        return result.scalar_one_or_none()
+
+
 async def is_user_in_db(tg_id: int) -> bool:
     async with async_session() as session: 
         result = await session.execute(select(User).where(User.tg_id == tg_id))

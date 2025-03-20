@@ -40,6 +40,19 @@ async def cmd_convertion(message: Message):
     await message.answer(text='Виберіть формат: ', reply_markup=kb.format_kb)
 
 
+@router.message(Command('my_stats'))
+async def send_user_data(message: Message):
+    user_id = message.from_user.id
+    user = await rq.get_user(user_id)
+
+    if user:
+        response = f"👤 *Користувач:* {user.username}\n🎯 *Конвертації:* {user.count_converts}"
+    else:
+        response = "❌ Дані не знайдено."
+
+    await message.answer(response, parse_mode="Markdown")
+
+
 @router.message(F.text.in_(formats))
 async def choose_format(message: Message):
     user_format_choice[message.from_user.id] = message.text.lower()

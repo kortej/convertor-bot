@@ -8,6 +8,6 @@ main = ReplyKeyboardMarkup(keyboard=[
 formats = ["PNG", "JPG", "WEBP"]
 
 format_kb = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text=fmt)] for fmt in formats],
+    keyboard=[[KeyboardButton(text=fmt) for fmt in formats]],
     resize_keyboard=True
 )

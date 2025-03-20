@@ -21,6 +21,11 @@ async def cmd_start(message: Message):
                         reply_markup=kb.main)
 
 
+@router.message(Command('help'))
+async def cmd_help(message: Message):
+    await message.reply('Якщо є запитання або помітили якісь баги в боті, пишіть в підтримку: @nazardt')
+
+
 @router.message(Command('register'))
 async def cmd_registration(message: Message):
     if await rq.is_user_in_db(message.from_user.id) is False:

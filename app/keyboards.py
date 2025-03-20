@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='/register'), KeyboardButton(text='/convert')]],
+    [KeyboardButton(text='/register'), KeyboardButton(text='/convert'), KeyboardButton(text='/help')]],
     resize_keyboard=True)
 
 

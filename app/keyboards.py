@@ -6,7 +6,7 @@ main = ReplyKeyboardMarkup(keyboard=[
     resize_keyboard=True)
 
 
-formats = ["PNG", "JPG", "WEBP"]
+formats = ["PNG", "JPG", "WEBP", "TIFF", "ICO"]
 
 format_kb = ReplyKeyboardMarkup(
     keyboard=[[KeyboardButton(text=fmt) for fmt in formats]],

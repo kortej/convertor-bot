@@ -1,13 +1,14 @@
 import os
+import app.keyboards as kb
+import database.requests as rq
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold
-import app.keyboards as kb
 from app.keyboards import formats, formats_2
 from PIL import Image
 from aiogram.types import FSInputFile
-import database.requests as rq
+import app.fsmContext as FSM
 
 
 router = Router()
@@ -16,9 +17,10 @@ user_format_choice = {}
 
 
 @router.message(CommandStart())
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, state: FSM.FSMContext):
     await message.answer(f"Привіт, виберіть дію: ",
                         reply_markup=kb.main)
+    await state.set_state(FSM.MenuStates.sub_menu)
 
 
 @router.message(Command('help'))
@@ -101,3 +103,8 @@ async def handle_photo(message: Message):
     # Очищення файлів
     os.remove(input_path)
     os.remove(output_path)
+
+
+@router.message(F.text == '🔙 Назад')
+async def back_to_main(message: Message, state: FSM.FSMContext):
+    await message.answer('🔹 Головне меню', reply_markup=kb.main)

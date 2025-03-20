@@ -55,6 +55,11 @@ async def send_user_data(message: Message):
     await message.answer(response, parse_mode="Markdown")
 
 
+@router.message(F.text == '🔙 Назад')
+async def back_to_main(message: Message, state: FSM.FSMContext):
+    await message.answer('🔹 Головне меню', reply_markup=kb.main)
+
+
 @router.message(F.text.in_(formats) | F.text.in_(formats_2))
 async def choose_format(message: Message):
     user_format_choice[message.from_user.id] = message.text.lower()
@@ -103,8 +108,3 @@ async def handle_photo(message: Message):
     # Очищення файлів
     os.remove(input_path)
     os.remove(output_path)
-
-
-@router.message(F.text == '🔙 Назад')
-async def back_to_main(message: Message, state: FSM.FSMContext):
-    await message.answer('🔹 Головне меню', reply_markup=kb.main)

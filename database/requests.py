@@ -1,6 +1,6 @@
 from database.db import async_session
 from database.db import User
-from sqlalchemy import select, update, delete
+from sqlalchemy import select
 
 
 async def set_user(tg_id: int, username: str):
@@ -38,4 +38,11 @@ async def counter(tg_id: int):
         
             await session.commit()
 
+        
+async def get_all_users():
+    async with async_session() as session:
+        result = await session.execute(select(User))
+        
+        users = result.scalars().all()
+        return users
         

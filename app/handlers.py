@@ -23,7 +23,9 @@ user_format_choice = {}
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSM.FSMContext):
     if message.from_user.id == ADMIN_ID:
-        await message.reply("👑 Ласкаво просимо, Адміністоре!")
+        await message.reply("👑 Ласкаво просимо, Адміністоре!",
+                            reply_markup=kb.admin_kb)
+        await state.set_state(FSM.MenuStates.admin_main)
     else:
         await message.answer(f"Привіт, виберіть дію: ",
                             reply_markup=kb.main)
@@ -62,9 +64,27 @@ async def send_user_data(message: Message):
     await message.answer(response, parse_mode="Markdown")
 
 
+@router.message(Command('all_users_stats'))
+async def cmd_get_all_users(message: Message):
+    users = await rq.get_all_users(tg_id=ADMIN_ID)
+
+    response = "Список користувачів:\n\n"
+    for user in users:
+        response += (
+              f"TG_ID: {user.tg_id}\n"
+              f"І'мя: {user.username}\n"
+              f"Кількість конвертацій: {user.count_converts}\n\n"
+              )
+        
+    await message.answer(response)
+
+
 @router.message(F.text == '🔙 Назад')
-async def back_to_main(message: Message): # remove state: FSM.FSMContext
-    await message.answer('🔹 Головне меню', reply_markup=kb.main)
+async def back_to_main(message: Message):
+    if ADMIN_ID:
+        await message.answer('🤴 Головне меню Адміна', reply_markup=kb.admin_kb)
+    else:
+        await message.answer('🔹 Головне меню', reply_markup=kb.main)
 
 
 @router.message(F.text.in_(formats) | F.text.in_(formats_2))

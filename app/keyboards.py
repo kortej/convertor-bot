@@ -6,6 +6,12 @@ main = ReplyKeyboardMarkup(keyboard=[
     resize_keyboard=True)
 
 
+admin_kb = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='/all_users_stats')],
+    [KeyboardButton(text='/convert'), KeyboardButton(text='/my_stats')]],
+    resize_keyboard=True)
+
+
 formats = ["PNG", "JPG", "WEBP"]
 formats_2 = ["TIFF", "ICO"]
 

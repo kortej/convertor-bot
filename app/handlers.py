@@ -1,6 +1,7 @@
 import os
 import app.keyboards as kb
 import database.requests as rq
+import app.fsmContext as FSM
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
@@ -8,19 +9,25 @@ from aiogram.utils.markdown import hbold
 from app.keyboards import formats, formats_2
 from PIL import Image
 from aiogram.types import FSInputFile
-import app.fsmContext as FSM
+from dotenv import load_dotenv
 
 
 router = Router()
+load_dotenv()
 
+
+ADMIN_ID = int(os.getenv('ADMIN_ID'))
 user_format_choice = {}
 
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSM.FSMContext):
-    await message.answer(f"Привіт, виберіть дію: ",
-                        reply_markup=kb.main)
-    await state.set_state(FSM.MenuStates.sub_menu)
+    if message.from_user.id == ADMIN_ID:
+        await message.reply("👑 Ласкаво просимо, Адміністоре!")
+    else:
+        await message.answer(f"Привіт, виберіть дію: ",
+                            reply_markup=kb.main)
+        await state.set_state(FSM.MenuStates.sub_menu)
 
 
 @router.message(Command('help'))

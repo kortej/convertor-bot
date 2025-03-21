@@ -1,13 +1,16 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from config import TOKEN
 from app.handlers import router
 from database.db import async_main
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 async def main():
     await async_main()
-    bot = Bot(token=TOKEN) 
+    bot = Bot(token=os.getenv('TOKEN')) 
     dp = Dispatcher() 
     dp.include_router(router) # передаем роутер в диспетчер
     await bot.delete_webhook(drop_pending_updates=True)

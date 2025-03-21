@@ -2,3 +2,4 @@
 config.py
 __pycache__
 database/format_bot.sqlite3
+.env

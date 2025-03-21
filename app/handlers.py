@@ -56,7 +56,7 @@ async def send_user_data(message: Message):
 
 
 @router.message(F.text == '🔙 Назад')
-async def back_to_main(message: Message, state: FSM.FSMContext):
+async def back_to_main(message: Message): # remove state: FSM.FSMContext
     await message.answer('🔹 Головне меню', reply_markup=kb.main)
 
 

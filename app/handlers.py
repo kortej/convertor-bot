@@ -27,23 +27,23 @@ async def cmd_start(message: Message, state: FSM.FSMContext):
                             reply_markup=kb.admin_kb)
         await state.set_state(FSM.MenuStates.admin_main)
     else:
-        await message.answer(f"Привіт, виберіть дію: ",
+        await message.answer(f"✨ Привіт, виберіть дію: ",
                             reply_markup=kb.main)
         await state.set_state(FSM.MenuStates.sub_menu)
 
 
 @router.message(Command('help'))
 async def cmd_help(message: Message):
-    await message.reply('Якщо є запитання або помітили якісь баги в боті, пишіть в підтримку: @nazardt')
+    await message.reply('‼️Якщо є запитання або помітили якісь баги в боті, пишіть в підтримку: @nazardt ‼️')
 
 
 @router.message(Command('register'))
 async def cmd_registration(message: Message):
     if await rq.is_user_in_db(message.from_user.id) is False:
         await rq.set_user(message.from_user.id, message.from_user.first_name)
-        await message.reply(text=f'Дякуємо за регістрацію!')
+        await message.reply(text=f'✍🏻 Дякуємо за регістрацію!')
     else:
-        await message.answer('Ви вже зареєстровані)')
+        await message.answer('📓 Ви вже зареєстровані)')
 
 
 @router.message(Command('convert'))
@@ -66,9 +66,8 @@ async def send_user_data(message: Message):
 
 @router.message(Command('all_users_stats'))
 async def cmd_get_all_users(message: Message):
-    user_tg = message.from_user.id
-    if user_tg != ADMIN_ID:
-        await message.answer('У вас немає прав на цю функцію', reply_markup=kb.main)
+    if message.from_user.id != ADMIN_ID:
+        await message.answer('🚫У вас немає прав на цю функцію🚫', reply_markup=kb.main)
     else:    
         users = await rq.get_all_users()
 

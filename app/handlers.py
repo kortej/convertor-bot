@@ -66,22 +66,26 @@ async def send_user_data(message: Message):
 
 @router.message(Command('all_users_stats'))
 async def cmd_get_all_users(message: Message):
-    users = await rq.get_all_users(tg_id=ADMIN_ID)
+    user_tg = message.from_user.id
+    if user_tg != ADMIN_ID:
+        await message.answer('У вас немає прав на цю функцію', reply_markup=kb.main)
+    else:    
+        users = await rq.get_all_users()
 
-    response = "Список користувачів:\n\n"
-    for user in users:
-        response += (
-              f"TG_ID: {user.tg_id}\n"
-              f"Ім'я: {user.username}\n"
-              f"Кількість конвертацій: {user.count_converts}\n\n"
-              )
-        
-    await message.answer(response)
+        response = "Список користувачів:\n\n"
+        for user in users:
+            response += (
+                f"TG_ID: {user.tg_id}\n"
+                f"Ім'я: {user.username}\n"
+                f"Кількість конвертацій: {user.count_converts}\n\n"
+                )
+            
+        await message.answer(response)
 
 
 @router.message(F.text == '🔙 Назад')
 async def back_to_main(message: Message):
-    if ADMIN_ID:
+    if message.from_user.id == ADMIN_ID:
         await message.answer('🤴 Головне меню Адміна', reply_markup=kb.admin_kb)
     else:
         await message.answer('🔹 Головне меню', reply_markup=kb.main)

@@ -59,7 +59,7 @@ async def send_user_data(message: Message):
     if user:
         response = f"👤 *Користувач:* {user.username}\n🎯 *Конвертації:* {user.count_converts}"
     else:
-        response = "❌ Дані не знайдено."
+        response = "❌ Дані не знайдено.\nСпочатку зареєструйтеся!"
 
     await message.answer(response, parse_mode="Markdown")
 

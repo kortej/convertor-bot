@@ -72,7 +72,7 @@ async def cmd_get_all_users(message: Message):
     for user in users:
         response += (
               f"TG_ID: {user.tg_id}\n"
-              f"І'мя: {user.username}\n"
+              f"Ім'я: {user.username}\n"
               f"Кількість конвертацій: {user.count_converts}\n\n"
               )
         
